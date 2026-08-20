@@ -69,14 +69,15 @@
     <h1>Autorização do Mercado Livre</h1>
     <p id="status" class="status">Verificando o retorno da autorização…</p>
     <code id="authorization-code" hidden></code>
-    <button id="copy-button" type="button" disabled>Copiar código temporário</button>
+    <button id="copy-button" type="button" disabled>Copiar retorno para o coletor</button>
     <small>
-      O código é temporário e só pode ser usado uma vez. Não envie este código,
+      O retorno contém um código temporário que só pode ser usado uma vez. Não envie este código,
       o Client Secret ou os tokens por mensagens. Esta página não transmite nem armazena o código.
     </small>
   </main>
   <script>
     (() => {
+      const responseUrl = window.location.href;
       const params = new URLSearchParams(window.location.search);
       const code = params.get("code");
       const error = params.get("error");
@@ -91,13 +92,13 @@
       }
 
       if (code) {
-        status.textContent = "Autorização concluída. Copie o código para o coletor local.";
+        status.textContent = "Autorização concluída. Copie o retorno para o coletor local.";
         codeElement.textContent = code;
         codeElement.hidden = false;
         copyButton.disabled = false;
         copyButton.addEventListener("click", async () => {
-          await navigator.clipboard.writeText(code);
-          copyButton.textContent = "Código copiado";
+          await navigator.clipboard.writeText(responseUrl);
+          copyButton.textContent = "Retorno copiado";
         });
         return;
       }
